@@ -25,20 +25,12 @@ public class Drivetrain extends SubsystemBase {
   /** Creates a new Drivetrain. */
   public Drivetrain() {
 
-    leftMaster = new CANSparkMax(0, MotorType.kBrushless);
-    leftSlave = new CANSparkMax(1, MotorType.kBrushless);
-    rightMaster = new CANSparkMax(2, MotorType.kBrushless);
-    rightSlave = new CANSparkMax(3, MotorType.kBrushless);
+    leftMaster = new CANSparkMax(1, MotorType.kBrushless);
+    leftSlave = new CANSparkMax(2, MotorType.kBrushless);
+    rightMaster = new CANSparkMax(3, MotorType.kBrushless);
+    rightSlave = new CANSparkMax(4, MotorType.kBrushless);
 
-    DifferentialDrive m_drivetrain = new DifferentialDrive(
-        (double output) -> {
-          leftMaster.set(output);
-          leftSlave.set(output);
-        },
-        (double output) -> {
-          rightMaster.set(output);
-          rightSlave.set(output);
-        });
+    m_drivetrain = new DifferentialDrive(leftMaster, rightMaster);
 
   }
 

@@ -11,7 +11,7 @@ import frc.robot.Subsystems.Drivetrain;
 
 public class RobotContainer {
 
-  public Drivetrain m_Drivetrain = new Drivetrain();
+  public Drivetrain m_Drivetrain;
 
   public final CommandXboxController m_driverController;
   
