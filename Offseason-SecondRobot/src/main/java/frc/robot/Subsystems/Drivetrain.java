@@ -4,7 +4,7 @@
 
 package frc.robot.Subsystems;
 
-import edu.wpi.first.wpilibj.CAN;
+import frc.robot.Constants.DriveConstants;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -25,20 +25,15 @@ public class Drivetrain extends SubsystemBase {
   /** Creates a new Drivetrain. */
   public Drivetrain() {
 
-    leftMaster = new CANSparkMax(0, MotorType.kBrushless);
-    leftSlave = new CANSparkMax(1, MotorType.kBrushless);
-    rightMaster = new CANSparkMax(2, MotorType.kBrushless);
-    rightSlave = new CANSparkMax(3, MotorType.kBrushless);
+    leftMaster = new CANSparkMax(DriveConstants.LEFT_MASTER_ID, MotorType.kBrushless);
+    leftSlave = new CANSparkMax(DriveConstants.RIGHT_MASTER_ID, MotorType.kBrushless);
+    rightMaster = new CANSparkMax(DriveConstants.LEFT_SLAVE_ID, MotorType.kBrushless);
+    rightSlave = new CANSparkMax(DriveConstants.RIGHT_SLAVE_ID, MotorType.kBrushless);
 
-    DifferentialDrive m_drivetrain = new DifferentialDrive(
-        (double output) -> {
-          leftMaster.set(output);
-          leftSlave.set(output);
-        },
-        (double output) -> {
-          rightMaster.set(output);
-          rightSlave.set(output);
-        });
+    leftSlave.follow(leftMaster);
+    rightMaster.follow(rightSlave);
+
+    m_drivetrain = new DifferentialDrive(leftMaster, rightMaster);
 
   }
 
@@ -47,8 +42,8 @@ public class Drivetrain extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public Command drive(double moveThrottle, double turnThrottle) {
-    return run(() -> m_drivetrain.arcadeDrive(moveThrottle, turnThrottle));
+  public Command drive(double leftThrottle, double rightThrottle) {
+    return run(() -> m_drivetrain.tankDrive(leftThrottle, rightThrottle));
   }
 
 }
