@@ -4,33 +4,34 @@
 
 package frc.robot.Subsystems;
 
-import edu.wpi.first.wpilibj.CAN;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.motorcontrol.MotorController;
-import edu.wpi.first.wpilibj2.command.Command;
+import java.util.HashMap;
+import java.util.Map;
+import frc.robot.Constants.DriveConstants;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 public class Drivetrain extends SubsystemBase {
 
-  CANSparkMax leftMaster;
-  CANSparkMax leftSlave;
-  CANSparkMax rightMaster;
-  CANSparkMax rightSlave;
-  DifferentialDrive m_drivetrain;
-
-  MotorController m_test;
+  public CANSparkMax leftFront;
+  public CANSparkMax leftBack;
+  public CANSparkMax rightFront;
+  public CANSparkMax rightBack;
+  public Map<String, CANSparkMax> motorMap;
 
   /** Creates a new Drivetrain. */
   public Drivetrain() {
 
-    leftMaster = new CANSparkMax(1, MotorType.kBrushless);
-    leftSlave = new CANSparkMax(2, MotorType.kBrushless);
-    rightMaster = new CANSparkMax(3, MotorType.kBrushless);
-    rightSlave = new CANSparkMax(4, MotorType.kBrushless);
+    leftFront = new CANSparkMax(DriveConstants.LEFT_MASTER_ID, MotorType.kBrushless);
+    leftBack = new CANSparkMax(DriveConstants.RIGHT_MASTER_ID, MotorType.kBrushless);
+    rightFront = new CANSparkMax(DriveConstants.LEFT_SLAVE_ID, MotorType.kBrushless);
+    rightBack = new CANSparkMax(DriveConstants.RIGHT_SLAVE_ID, MotorType.kBrushless);
 
-    m_drivetrain = new DifferentialDrive(leftMaster, rightMaster);
+    motorMap = new HashMap<String, CANSparkMax>();
+    motorMap.put("leftFront", leftFront);
+    motorMap.put("rightFront", rightFront);
+    motorMap.put("leftBack", leftBack);
+    motorMap.put("leftBack", leftBack);
 
   }
 
@@ -39,8 +40,10 @@ public class Drivetrain extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public Command drive(double moveThrottle, double turnThrottle) {
-    return run(() -> m_drivetrain.arcadeDrive(moveThrottle, turnThrottle));
+
+  public Map<String, CANSparkMax> getMotors() {
+    return motorMap;
   }
+
 
 }
