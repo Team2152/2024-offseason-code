@@ -7,16 +7,18 @@ package frc.robot.commands;
 import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems.Drivetrain;
 import java.util.Map;
 
 public class Tankdrive extends Command {
+
   private final Drivetrain drivetrain;
   private final double leftThrottle;
   private final double rightThrottle;
   DifferentialDrive differentialDrive;
-  Map<CANSparkMax, CANSparkMax> motorFollowerMap;
+  Map<String, CANSparkMax> motorMap;
 
   /** Creates a new Tankdrive. */
   public Tankdrive(Drivetrain driveTrain, double leftThrottle, double rightThrottle) {
@@ -34,10 +36,16 @@ public class Tankdrive extends Command {
   }
 
   public void setupFollowers() {
-    
-    drivetrain.leftFront.follow(drivetrain.leftBack);
-    drivetrain.rightFront.follow(drivetrain.rightBack);
-    differentialDrive = new DifferentialDrive(drivetrain.leftFront, drivetrain.rightFront);
+    motorMap = drivetrain.get_motors();
+
+    CANSparkMax leftFront = motorMap.get("leftFront");
+    CANSparkMax rightFront = motorMap.get("rightFront");
+    CANSparkMax leftBack = motorMap.get("leftBack");
+    CANSparkMax rightBack = motorMap.get("rightBack");
+
+    leftFront.follow(leftBack);
+    rightFront.follow(rightBack);
+    differentialDrive = new DifferentialDrive(leftFront, rightFront);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -48,6 +56,7 @@ public class Tankdrive extends Command {
 
   public void drive() {
     differentialDrive.tankDrive(leftThrottle, rightThrottle);
+    SmartDashboard.putNumber("Throttlevalue", leftThrottle);
   }
 
   // Called once the command ends or is interrupted.
