@@ -21,11 +21,10 @@ public class RobotContainer {
 
     configureBindings();
 
-    m_Drivetrain.setDefaultCommand(Commands.run(
-      () -> m_Drivetrain.tankDriveCommand(m_driverController.getLeftY(), m_driverController.getRightY()), m_Drivetrain));
   }
 
   private void configureBindings() {
+    m_Drivetrain.setDefaultCommand(m_Drivetrain.tankDriveCommand(m_driverController.getLeftY(), m_driverController.getRightY()));
   }
 
   public Command getAutonomousCommand() {
