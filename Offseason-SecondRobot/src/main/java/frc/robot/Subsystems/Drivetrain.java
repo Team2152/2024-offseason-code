@@ -5,40 +5,35 @@
 package frc.robot.Subsystems;
 
 import frc.robot.Constants.DriveConstants;
-import edu.wpi.first.util.sendable.SendableRegistry;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 public class Drivetrain extends SubsystemBase {
 
-  private CANSparkMax leftFront;
-  private CANSparkMax leftBack;
-  private CANSparkMax rightFront;
-  private CANSparkMax rightBack;
-  private DifferentialDrive m_drivetrain;
+  public CANSparkMax leftFront;
+  public CANSparkMax leftBack;
+  public CANSparkMax rightFront;
+  public CANSparkMax rightBack;
+  private final Map<String, CANSparkMax> motorMap;
 
   /** Creates a new Drivetrain. */
   public Drivetrain() {
 
-    // Sets new motors.
-    leftFront = new CANSparkMax(DriveConstants.leftFront, MotorType.kBrushless);
-    leftBack = new CANSparkMax(DriveConstants.leftBack, MotorType.kBrushless);
-    rightFront = new CANSparkMax(DriveConstants.rightFront, MotorType.kBrushless);
-    rightBack = new CANSparkMax(DriveConstants.rightBack, MotorType.kBrushless);
+    leftFront = new CANSparkMax(DriveConstants.LEFT_FRONT, MotorType.kBrushless);
+    leftBack = new CANSparkMax(DriveConstants.LEFT_BACK, MotorType.kBrushless);
+    rightFront = new CANSparkMax(DriveConstants.RIGHT_FRONT, MotorType.kBrushless);
+    rightBack = new CANSparkMax(DriveConstants.RIGHT_BACK, MotorType.kBrushless);
 
-    SendableRegistry.addChild(m_drivetrain, leftFront);
-    SendableRegistry.addChild(m_drivetrain, rightFront);
-
-    leftBack.follow(leftFront);
-    rightBack.follow(rightFront);
-
-
-    m_drivetrain = new DifferentialDrive(leftFront::set, rightFront::set);
-    
-
+    motorMap = new HashMap<String, CANSparkMax>();
+    motorMap.put("leftFront", leftFront);
+    motorMap.put("rightFront", rightFront);
+    motorMap.put("leftBack", leftBack);
+    motorMap.put("rightBack", rightBack);
   }
 
   @Override
@@ -46,10 +41,8 @@ public class Drivetrain extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-
-  public Command tankDriveCommand(double left_throttle, double right_throttle)  {
-    return run(
-      () -> m_drivetrain.tankDrive(left_throttle, right_throttle));
+  public Map<String, CANSparkMax> get_motors() {
+    return motorMap;
   }
 
 }

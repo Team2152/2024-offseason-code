@@ -8,10 +8,10 @@ package frc.robot;
 public class Constants {
 
     public static final class DriveConstants {
-        public static final int leftFront = 1; 
-        public static final int leftBack = 2; 
-        public static final int rightFront = 3; 
-        public static final int rightBack = 4; 
+        public static final int LEFT_FRONT = 1; 
+        public static final int LEFT_BACK = 2; 
+        public static final int RIGHT_FRONT = 3; 
+        public static final int RIGHT_BACK = 4; 
     }
 
     public static final class OIConstants {

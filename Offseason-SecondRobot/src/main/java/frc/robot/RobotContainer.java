@@ -7,24 +7,27 @@ package frc.robot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.Constants.OIConstants;
 import frc.robot.Subsystems.Drivetrain;
+import frc.robot.commands.Tankdrive;;
 
 public class RobotContainer {
 
-  public Drivetrain m_Drivetrain = new Drivetrain();
+  public Drivetrain m_Drivetrain;
 
-  CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
+  public final CommandXboxController m_driverController;
   
 
   public RobotContainer() {
+    m_Drivetrain = new Drivetrain();
+    
+    m_driverController = new CommandXboxController(Constants.OIConstants.kDriverControllerPort);
 
     configureBindings();
 
+    m_Drivetrain.setDefaultCommand(new Tankdrive(m_Drivetrain, m_driverController.getLeftY(), m_driverController.getRightY()));
   }
 
   private void configureBindings() {
-    m_Drivetrain.setDefaultCommand(m_Drivetrain.tankDriveCommand(m_driverController.getLeftY(), m_driverController.getRightY()));
   }
 
   public Command getAutonomousCommand() {
