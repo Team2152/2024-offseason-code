@@ -12,11 +12,15 @@ public class Constants {
         public static final int leftBack = 2; 
         public static final int rightFront = 3; 
         public static final int rightBack = 4; 
+
+        public static final double kLimiterModifier = 5;
     }
 
     public static final class OIConstants {
         public static final int kDriverControllerPort = 0;
         public static final int kOperatorControllerPort = 1;
+
+        public static final double kDriveDeadband = 0.15;
     }
 
 }
